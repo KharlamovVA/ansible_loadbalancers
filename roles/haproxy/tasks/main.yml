@@ -1,0 +1,18 @@
+---
+# tasks file for haproxy
+
+- name: Install latest version of "haproxy" 
+  ansible.builtin.apt:
+    name: haproxy
+    state: latest
+    update_cache: yes
+
+
+- name: Create config-file from template
+  template: src=haproxy.cfg.j2 dest={{ dest_path }}/haproxy.cfg
+  notify: Restart haproxy
+
+- name: Add haproxy to autoloading
+  ansible.builtin.service:
+    name: haproxy
+    enabled: yes

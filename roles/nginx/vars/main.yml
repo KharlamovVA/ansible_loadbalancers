@@ -1,0 +1,5 @@
+---
+# vars file for nginx
+
+dest_path: /var/www/html/ 
+text: Hello World!

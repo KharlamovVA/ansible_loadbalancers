@@ -1,0 +1,26 @@
+---
+# tasks file for keepalived
+
+- name: Install latest version of "keepalived" 
+  ansible.builtin.apt:
+    name: keepalived
+    state: latest
+    update_cache: yes
+
+#- name: Change sysctl.conf
+#  shell: -c "echo 'net.ipv4.ip_nonlocal_bind=1' >> /etc/sysctl.conf"
+
+- block: # Block for loadbalancer01
+  - name: Create index-file from template
+    template: src=keepalived1.conf.j2 dest={{ dest_path }}/keepalived.conf
+    notify: Restart keepalived
+  when: ansible_default_ipv4.address == '192.168.1.85'
+  become: true
+
+- block: # Block for loadbalancer02
+  - name: Create index-file from template
+    template: src=keepalived2.conf.j2 dest={{ dest_path }}/keepalived.conf
+    notify: Restart keepalived
+  when: ansible_default_ipv4.address == '192.168.1.82'
+  become: true
+

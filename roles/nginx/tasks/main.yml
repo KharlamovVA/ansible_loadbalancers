@@ -1,0 +1,23 @@
+---
+# tasks file for nginx
+
+- name: Install latest version of "nginx" 
+  ansible.builtin.apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+
+- block: # Block for web01
+  - name: Create index-file from template
+    template: src=index1.html.j2 dest={{ dest_path }}/index.nginx-debian.html
+    notify: Restart nginx
+  when: ansible_default_ipv4.address == '192.168.1.52'
+  become: true
+
+- block: # Block for web02
+  - name: Create index-file from template
+    template: src=index2.html.j2 dest={{ dest_path }}/index.nginx-debian.html
+    notify: Restart nginx
+  when: ansible_default_ipv4.address == '192.168.1.142'
+  become: true

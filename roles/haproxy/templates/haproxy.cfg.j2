@@ -1,0 +1,28 @@
+global
+  stats socket /var/run/api.sock user haproxy group haproxy mode 660 level admin expose-fd listeners
+  log stdout format raw local0 info
+
+defaults
+  mode http
+  timeout client 10s
+  timeout connect 5s
+  timeout server 10s
+  timeout http-request 10s
+  log global
+
+listen stats
+        bind 0.0.0.0:8989
+        mode http
+        stats enable
+        stats uri /haproxy_stats
+        stats realm HAProxy\ Statistics
+        stats auth admin:{{ hapstat_pass }}
+        stats admin if TRUE
+
+frontend myfrontend
+  bind :80
+  default_backend webservers
+
+backend webservers
+  server web1 {{ web01 }}:80 check
+  server web2 {{ web02 }}:80 check

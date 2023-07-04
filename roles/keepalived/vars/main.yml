@@ -1,0 +1,10 @@
+---
+# vars file for keepalived
+
+dest_path: /etc/keepalived
+vip: 192.168.1.2
+pr1: 100
+pr2: 99
+st1: MASTER
+st2: BACKUP
+if: enp0s3

@@ -1,0 +1,6 @@
+---
+# vars file for haproxy
+
+web01: 192.168.1.52
+web02: 192.168.1.142 
+dest_path: /etc/haproxy
